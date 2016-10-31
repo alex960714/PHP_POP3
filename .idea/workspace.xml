@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f9e058ec-5cfd-4686-9ab4-c093125f8da9" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/auth.html" afterPath="$PROJECT_DIR$/auth/auth.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/auth_style.css" afterPath="$PROJECT_DIR$/auth/auth_style.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/auth_sub.php" afterPath="$PROJECT_DIR$/auth/auth_sub.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auth/auth.html" afterPath="$PROJECT_DIR$/auth/auth.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auth/auth_sub.php" afterPath="$PROJECT_DIR$/auth/auth_sub.php" />
     </list>
     <ignored path="PHP_POP3.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,21 +36,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="auth.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="auth.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/auth/auth.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="235">
-              <caret line="20" column="49" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
+              <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="auth_sub.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="auth_sub.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/auth/auth_sub.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="374">
+              <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -86,6 +85,7 @@
         <option value="$PROJECT_DIR$/auth.html" />
         <option value="$PROJECT_DIR$/auth_style.css" />
         <option value="$PROJECT_DIR$/auth/auth.html" />
+        <option value="$PROJECT_DIR$/auth/auth_sub.php" />
       </list>
     </option>
   </component>
@@ -100,8 +100,8 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="11" />
-    <option name="y" value="4" />
+    <option name="x" value="8" />
+    <option name="y" value="38" />
     <option name="width" value="1346" />
     <option name="height" value="688" />
   </component>
@@ -225,15 +225,15 @@
       <option name="presentableId" value="Default" />
       <updated>1477920722877</updated>
       <workItem from="1477920724406" duration="6806000" />
-      <workItem from="1477945705949" duration="1823000" />
+      <workItem from="1477945705949" duration="6906000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8629000" />
+    <option name="totallyTimeSpent" value="13712000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="11" y="4" width="1346" height="688" extended-state="1" />
+    <frame x="8" y="38" width="1346" height="688" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24962406" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -320,18 +320,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auth/auth_sub.php">
+    <entry file="file://$PROJECT_DIR$/auth/auth.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="235">
+          <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auth/auth.html">
+    <entry file="file://$PROJECT_DIR$/auth/auth_sub.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="20" column="49" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
+        <state relative-caret-position="374">
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
           <folding />
         </state>
       </provider>
