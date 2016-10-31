@@ -18,8 +18,9 @@
 
 #authframe
 {
-    background: #F1F9BE;
+    background: #377ef0;
     color: #000000;
     text-align: center;
     height: 350px;
+    font-size: 20px;
 }
