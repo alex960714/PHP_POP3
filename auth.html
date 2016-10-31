@@ -12,18 +12,19 @@
     
   </div>
   <div id="authframe">
-    <div id="login">
-      
-    </div>
-    <div id="password">
-      
-    </div>
-    <div id="button">
-      
-    </div>
-    <div id="warning">
-      
-    </div>
+    <form action="auth_sub.php">
+      <p><b>Авторизация</b></p>
+      <p><input type="text" name="login" placeholder="логин">
+      <select size="1" name="client">
+        <option selected value="yandex">@yandex.ru</option>
+        <option value="gmail">@gmail.com</option>
+        <option value="mail.ru">@mail.ru</option>
+      </select></p>
+      <p><input type="password" name="password" placeholder="пароль"></p>
+      <p><input type="submit" name="submit" value="Войти"></p>
+    </form>
+
+
   </div>
 </div>
 

@@ -1,0 +1,25 @@
+#body
+{
+    background: #FFFFFF;
+}
+
+#page
+{
+    background: #FFFFFF;
+    margin: 30px auto;
+    height: 500px;
+    width: 700px;
+}
+
+#logo
+{
+    height: 150px;
+}
+
+#authframe
+{
+    background: #F1F9BE;
+    color: #000000;
+    text-align: center;
+    height: 350px;
+}
