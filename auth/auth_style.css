@@ -8,19 +8,26 @@
     background: #FFFFFF;
     margin: 30px auto;
     height: 500px;
-    width: 700px;
+    width: 1400px;
 }
 
 #logo
 {
-    height: 150px;
+
 }
 
 #authframe
 {
-    background: #377ef0;
+    background: rgb(78, 157, 226);
     color: #000000;
     text-align: center;
-    height: 350px;
+    height: 200px;
+    width: 400px;
     font-size: 20px;
+    margin-left: 75px;
+    margin-top: 107px;
+    border: solid 1px rgba(240, 240, 240, 0.55);
+    border-radius: 5px;
+    box-shadow: 0 3px 3px rgb(179, 178, 228);
+
 }
