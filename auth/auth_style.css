@@ -10,9 +10,11 @@
     height: 800px;
     width: 1334px;
     padding-top: 124px;
+    font-family: Trebuchet MS, Arial, Times New Roman;
+    font-size: 12px;
 }
 
-#logo
+#header
 {
 
 }
@@ -79,4 +81,9 @@ input[type="submit"]
     color: #ffffff;
     font-size: 19px;
     margin-top: -6px;
+}
+
+#footer
+{
+    
 }
