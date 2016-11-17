@@ -1,11 +1,11 @@
-#body
+body
 {
-    background: #FFFFFF;
+    background-image: url("../images/background_image.jpg");
 }
 
 #page
 {
-    background: #bee1ff;
+    /*background: #bee1ff;*/
     margin: 0px auto;
     height: 800px;
     width: 1334px;
@@ -21,8 +21,8 @@
 
 #authframe
 {
-    background: rgb(78, 157, 226);
-    color: #000000;
+    /*background: rgb(78, 157, 226); */
+    color: #ffffff;
     height: 200px;
     width: 400px;
     font-size: 20px;
@@ -32,6 +32,8 @@
     border-radius: 5px;
     box-shadow: 0 3px 3px rgb(179, 178, 228);
     /* padding-top: 200px; */
+    background-image: url(../images/menu2.jpg);
+    background-repeat: round;
 
 }
 
@@ -77,7 +79,7 @@ input[type="submit"]
     float: right;
     border-radius: 5px;
     border: 1px solid rgba(255, 255, 255, 0.52);
-    background: #0000ff;
+    background: #60a3d8 linear-gradient(#89bbe2, #60a3d8 50%, #378bce);
     color: #ffffff;
     font-size: 19px;
     margin-top: -6px;
@@ -85,5 +87,5 @@ input[type="submit"]
 
 #footer
 {
-    
+
 }
