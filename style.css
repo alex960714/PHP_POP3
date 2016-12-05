@@ -4,7 +4,7 @@ body {
     background-image: url("images/background_image.jpg");
     background-repeat: round;
     color: #000000;
-    font-family: Trebuchet MS, Arial, Times New Roman;
+    font-family: Trebuchet MS, Arial, Times New Roman, serif;
     font-size: 12px;
 }
 
@@ -17,7 +17,7 @@ body {
     /*background: #86C5DF;*/
     margin: 30px auto;
     width: 1200px;
-    height: 1200px;
+    height: 1000px;
 }
 
 #header {
@@ -42,17 +42,33 @@ body {
     background-repeat: round;
     float: left;
     width: 300px;
-    height: 1030px;
+    height: 830px;
 }
 
 #content {
     /*background: #82F083;*/
-    background-image: url("images/content.png");
-    background-repeat: round;
+
     float: right;
 
     width: 900px;
-    height: 1030px;
+    height: 830px;
+    overflow: scroll;
+
+    scrollbar-face-color:#5997CA;
+
+    scrollbar-shadow-color: #ffffff;
+
+    scrollbar-highlight-color: #ffffff;
+
+    scrollbar-3dlight-color: #5997CA;
+
+    scrollbar-darkshadow-color: #5997CA;
+
+    scrollbar-track-color: #F6F6F6;
+
+    scrollbar-arrow-color: #F6F6F6;
+    background-image: url("images/content.png");
+    background-repeat: round;
 }
 
 #clear {
