@@ -46,8 +46,8 @@ body
 
 input[type="text"]
 {
-    width: 153px;
-    height: 25px;
+    width: 161px;
+    height: 29px;
     border-radius: 5px;
     border: 2px solid rgba(255, 255, 255, 0.52);
     padding: 0 5px;
@@ -56,8 +56,8 @@ input[type="text"]
 }
 input[type="password"]
 {
-    width: 262px;
-    height: 25px;
+    width: 276px;
+    height: 29px;
     border-radius: 5px;
     border: 2px solid rgba(255, 255, 255, 0.52);
     padding: 0 5px;

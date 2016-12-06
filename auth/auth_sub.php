@@ -14,10 +14,17 @@ echo fgets($fp,1024).'<br />';
 echo fgets($fp,1024).'<br />';*/
 
 fputs($fp,"USER ".$login.CRLF);
-echo fgets($fp,1024).'<br />';
+$get_log = fgets($fp,1024);
+echo $get_log.'<br />';
 
 fputs($fp,"PASS ".$password.CRLF);
-echo fgets($fp,1024).'<br />';
+$get_pass = fgets($fp,1024);
+echo $get_pass.'<br />';
+
+if(substr($get_log,0,4)=="-ERR" || substr($get_pass,0,4)=="-ERR")
+{
+ echo "err";
+}
 
 fputs($fp,"QUIT ".CRLF);
 echo fgets($fp,1024).'<br />';
