@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Авторизация</title>
-    <link rel="stylesheet" type="text/css" href="auth_style.css" />
+    <link rel="stylesheet" type="text/css" href="../styles/auth_style.css" />
 </head>
-<body>
 
+<body>
 <div id="page">
     <div id="header">
 
@@ -15,7 +15,7 @@
     <div id="authframe">
 
         <div id="column">
-            <form action="../index.php" method="post">
+            <form action="../pageLoad/index.php" method="post">
                 <label><p><b>Авторизация</b></p>
                     <p><input type="text" name="login" placeholder="логин" size="20" required></label>
 
