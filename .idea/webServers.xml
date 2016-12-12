@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="bc09597e-e940-4dd8-8a1b-f4676b6bbaba" name="ApacheServer" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="C:\ApacheServer\data\htdocs\PHP_POP3" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>

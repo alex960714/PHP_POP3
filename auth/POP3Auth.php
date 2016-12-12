@@ -7,7 +7,7 @@ class POP3Auth
     function _destruct()
     {}
     
-    function connect(&$login,&$client,&$password)
+    function connect($login,$client,$password)
     {
         define('CRLF',"\r\n");
         //$email=$login."@".$client;
@@ -32,13 +32,14 @@ class POP3Auth
         /*fputs($fp,"STLS ".CRLF);
         echo fgets($fp,1024).'<br />';*/
 
+        
         fputs($fp,"USER ".$login.CRLF);
         $get_log = fgets($fp,1024);
         //echo $get_log.'<br />';
 
         fputs($fp,"PASS ".$password.CRLF);
         $get_pass = fgets($fp,1024);
-       //echo $get_pass.'<br />';
+        //echo $get_pass.'<br />';
 
         if(substr($get_log,0,4)=="-ERR" || substr($get_pass,0,4)=="-ERR") {
             fclose($fp);
