@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Авторизация</title>
-    <link rel="stylesheet" type="text/css" href="../styles/auth_style.css" />
-</head>
+<?php
+require "../headers/auth_header.html";
+?>
 
 <body>
 <div id="page">
@@ -23,6 +21,7 @@
                     <option selected value="yandex.ru">@yandex.ru</option>
                     <option value="gmail.com">@gmail.com</option>
                     <option value="mail.ru">@mail.ru</option>
+                    <option selected value="rambler.ru">@rambler.ru</option>
                 </select></p>
 
 
