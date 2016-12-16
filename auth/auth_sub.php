@@ -1,32 +1,44 @@
+
+
 <?php
-define('CRLF',"\r\n");
 
-$login=htmlspecialchars($_GET["login"]);
-$client=htmlspecialchars($_GET["client"]);
-$password=htmlspecialchars($_GET["password"]);
+include('pop3.php');
 
-$email=$login."@".$client;
-$host="pop.".$client;
-$fp=fsockopen($host,110,$errno,$errstr,10);
-echo fgets($fp,1024).'<br />';
+// коннект к базе
+mysql_connect('localhost', 'root', '') or die('Connect to mysql server failed');
+mysql_select_db('mbox') or die('DB selection failed');
 
-/*fputs($fp,"STLS ".CRLF);
-echo fgets($fp,1024).'<br />';*/
+try {
 
-fputs($fp,"USER ".$login.CRLF);
-echo fgets($fp,1024).'<br />';
+    // читаем почту
+    $pop = new pop3('pop.mail.ru', 110, 'xxx', '******');
 
-fputs($fp,"PASS ".$password.CRLF);
-echo fgets($fp,1024).'<br />';
+    // получаем количество писем
+    list($num) = $pop->count();
 
-fputs($fp,"QUIT ".CRLF);
-echo fgets($fp,1024).'<br />';
+    // проходимся по всем письмам
+    for ( $i = 1; $i <= $num; $i++ ) {
 
-fclose($fp);
-?>
-/**
- * Created by PhpStorm.
- * User: Александр
- * Date: 31.10.2016
- * Time: 17:38
- */
+        list($hdr, $body) = $pop->retr($i); // письмо номер $i
+
+        // mail.ru кодирует всё в base64 и кодировку koi8-r
+        // обработка тела сообщения
+        $body = base64_decode($body);
+        $body = iconv('KOI8-R', 'WINDOWS-1251', $body);
+
+        // поиск темы письма
+        if ( preg_match("!Subject: ([^\n]+)!", $hdr, $m) ) {
+            list(, $charset, , $subj) = explode('?', $m[1]);
+            $subj = base64_decode($subj);
+            $subj = iconv('KOI8-R', 'WINDOWS-1251', $subj);
+        }
+
+        // вставляем в базу
+        $sql = 'INSERT INTO `mail` (`subj`, `body`) VALUES (.$subj., .$body.)';
+    mysql_query($sql); 
+    $pop->dele($i); // и удаляем письмо
+  } 
+
+} catch (Exception $e) { 
+  print $e->getMessage(); 
+}
