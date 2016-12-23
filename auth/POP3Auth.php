@@ -7,26 +7,15 @@ class POP3Auth
     function _destruct()
     {}
 
-    function get_data(&$fp)
-    {
-        $data="";
-        while (!feof($fp)) {
-            $buffer = chop(fgets($fp,1024));
-            $data .= "$buffer\r\n";
-            if(trim($buffer) == ".") break;
-        }
-        return $data;
-    }
-
     function connect($login,$client,$password,&$fp)
     {
-        define('CRLF',"\r\n");
+
+        define('CRLF', "\r\n");
         //$email=$login."@".$client;
-        $host="pop.".$client;
+        $host = "pop." . $client;
         try {
             $fp = fsockopen($host, 110, $errno, $errstr, 10);
-            if($fp==false)
-            {
+            if ($fp == false) {
                 return "con_fail";
             }
             $connect = fgets($fp, 1024);
@@ -34,74 +23,100 @@ class POP3Auth
                 fclose($fp);
                 return "con_fail";
             }
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             return "con_fail";
         }
 
         /*fputs($fp,"STLS ".CRLF);
         echo fgets($fp,1024).'<br />';*/
 
-        
-        fputs($fp,"USER ".$login.CRLF);
-        $get_log = fgets($fp,1024);
-        echo $get_log.'<br />';
 
-        fputs($fp,"PASS ".$password.CRLF);
-        $get_pass = fgets($fp,1024);
-        echo $get_pass.'<br />';
+        fputs($fp, "USER " . $login . CRLF);
+        $get_log = fgets($fp, 1024);
+        echo $get_log . '<br />';
 
-        if(substr($get_log,0,4)=="-ERR" || substr($get_pass,0,4)=="-ERR") {
+        fputs($fp, "PASS " . $password . CRLF);
+        $get_pass = fgets($fp, 1024);
+        echo $get_pass . '<br />';
+
+        if (substr($get_log, 0, 4) == "-ERR" || substr($get_pass, 0, 4) == "-ERR") {
             fclose($fp);
             return "log_or_pass_fail";
         }
 
         //$mes_Num=fputs($fp,"STAT\r\n");
-        $pos=strpos($get_pass,' ');
-        $mesNum=substr($get_pass,0,$pos);
+        $pos = strpos($get_pass, ' ',4)-4;
+        $mesNum = substr($get_pass, 4 , $pos);
+        echo $mesNum.'<br />';
 
-        /*for($i=1;$i<=$mesNum;$i++)
-        {
-            $comm="TOP ".$i." 0\r\n";
+        for($i=1;$i<=$mesNum;$i++) {
+            $comm = "RETR " . $i. "\r\n";
+            fputs($fp, $comm);
+
+            /*$comm="TOP 1\r\n";
             fputs($fp,$comm);
-            echo fgets($fp,1024).'<br />';
-            //print get_data($fp);
-        }*/
-        /*$comm="TOP 1\r\n";
-        fputs($fp,$comm);
-        echo fgets($fp,1024).'<br />';*/
+            echo fgets($fp,1024).'<br />';*/
 
-        $comm="RETR 5 3\r\n";
-        fputs($fp,$comm);
-        $data="";
-        while (!feof($fp)) {
-            $buffer = chop(fgets($fp,1024));
-            $data .= "$buffer\r\n";
-            if(trim($buffer) == ".") break;
+
+            fputs($fp, $comm);
+            $data = $this->get_data($fp);
+            /*while (!feof($fp)) {
+                $buffer = chop(fgets($fp,1024));
+                $data .= "$buffer\r\n";
+                if(trim($buffer) == ".") break;
+            }*/
+            //$message=$this->compile_body($data, "base64","string" );
+            $format = substr($data, strpos($data, "charset=\"") + 9, strpos($data, "\"", strpos($data, "charset=\"") + 9) - (strpos($data, "charset=\"") + 9));
+            $data = quoted_printable_decode($data);
+            if ($format != "utf-8") $data = iconv($format, "utf-8", $data);
+            /*$format = substr($data, strpos($data, "base64"), 7);
+            echo $format.'<br />';*/
+            $data = $this->decode_mime_string($data);
+            $data = $this->compile_body($data, "utf-8");
+            $email = $this->fetch_structure($data);
+
+            //echo $email['header'] . '<br />';
+            $base64_num = strpos($email['header'], "base64") + 7;
+            $text_base64 = substr($email['header'], $base64_num, strpos($email['header'], "=", $base64_num) - $base64_num + 1);
+            $base64_num = strpos($email['header'], "From:") + 6;
+            //echo $base64_num . '<br />';
+            $text_base64 = substr($email['header'], $base64_num, strpos($email['header'], "To", $base64_num) - $base64_num);
+            echo "From: " . $text_base64 . '<br />' . '<br />';
+            //if ($format != "utf-8") echo iconv($format,"utf-8",base64_decode($text_base64)).'<br />';
+            // else echo base64_decode($text_base64).'<br />';
+            /*$base64_num=0;
+            while (strpos($email['body'], "base64", $base64_num)!=false) {*/
+            $base64_num = strpos($email['body'], "base64") + 7;
+            $text_base64 = substr($email['body'], $base64_num, strpos($email['body'], "=", $base64_num) - $base64_num + 1);
+            //echo base64_decode($text_base64) . '<br />';
+            //}
+            //echo $text_base64.'<br />';
+
+            //echo $data.'<br />';
+
+            /*$comm="TOP 2 1\r\n";
+            fputs($fp,$comm);
+            echo fgets($fp,1024).'<br />';*/
+
         }
-        //$message=$this->compile_body($data, "base64","string" );
-        $format = substr($data, strpos($data, "charset=\"") + 9, strpos($data, "\"",strpos($data, "charset=\"") + 9) - (strpos($data, "charset=\"") + 9));
-        $data=quoted_printable_decode($data);
-        $data=iconv($format,"utf-8",$data);
-        //$data=iconv("windows-1251","utf-8",$data);
-        echo $data.'<br />';
-
-        /*$comm="TOP 2 1\r\n";
-        fputs($fp,$comm);
-        echo fgets($fp,1024).'<br />';*/
 
 
-        fputs($fp,"QUIT ".CRLF);
-        echo fgets($fp,1024).'<br />';
+        fputs($fp, "QUIT " . CRLF);
+        echo fgets($fp, 1024) . '<br />';
+
 
         fclose($fp);
         return "success";
     }
 
+    function printHeaders(&$fp) {
+
+    }
+
     function decode_mime_string($subject) {
         $string = $subject;
         if(($pos = strpos($string,"=?")) === false) return $string;
+        $newresult = '';
         while(!($pos === false)) {
             $newresult .= substr($string,0,$pos);
             $string = substr($string,$pos+2,strlen($string));
@@ -119,21 +134,21 @@ class POP3Auth
         }
 
         $result = $newresult.$string;
-        if(preg_match("koi8", $subject)) $result = convert_cyr_string($result, "k", "w");
-        if(preg_match("KOI8", $subject)) $result = convert_cyr_string($result, "k", "w");
+        /*if(preg_match("koi8", $subject)) $result = convert_cyr_string($result, "k", "w");
+        if(preg_match("KOI8", $subject)) $result = convert_cyr_string($result, "k", "w");*/
         return $result;
     }
 
 // перекодировщик тела письма.
 // Само письмо может быть закодировано и данная функция приводит тело письма в нормальный вид.
 // Так же и вложенные файлы будут перекодироваться этой функцией.
-    function compile_body($body,$enctype,$ctype) {
+    function compile_body($body,$enctype/*,$ctype*/) {
         $enctype = explode(" ",$enctype); $enctype = $enctype[0];
         if(strtolower($enctype) == "base64")
             $body = base64_decode($body);
         elseif(strtolower($enctype) == "quoted-printable")
             $body = quoted_printable_decode($body);
-        if(preg_match("koi8", $ctype)) $body = convert_cyr_string($body, "k", "w");
+        //if(preg_match("koi8", $ctype)) $body = convert_cyr_string($body, "k", "w");
         return $body;
     }
 
@@ -191,7 +206,7 @@ class POP3Auth
     }
 
 // эта функция нам уже знакома. она получает данные и реагирует на точку, которая ставится сервером в конце вывода.
-    /*function get_data($pop_conn)
+    function get_data($pop_conn)
     {
         $data="";
         while (!feof($pop_conn)) {
@@ -200,5 +215,5 @@ class POP3Auth
             if(trim($buffer) == ".") break;
         }
         return $data;
-    }*/
+    }
 }
