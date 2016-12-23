@@ -33,23 +33,30 @@ class POP3Auth
 
         fputs($fp, "USER " . $login . CRLF);
         $get_log = fgets($fp, 1024);
-        echo $get_log . '<br />';
+        //echo $get_log . '<br />';
 
         fputs($fp, "PASS " . $password . CRLF);
         $get_pass = fgets($fp, 1024);
-        echo $get_pass . '<br />';
+        //echo $get_pass . '<br />';
 
         if (substr($get_log, 0, 4) == "-ERR" || substr($get_pass, 0, 4) == "-ERR") {
             fclose($fp);
             return "log_or_pass_fail";
         }
 
-        //$mes_Num=fputs($fp,"STAT\r\n");
-        $pos = strpos($get_pass, ' ',4)-4;
-        $mesNum = substr($get_pass, 4 , $pos);
-        echo $mesNum.'<br />';
 
-        for($i=1;$i<=$mesNum;$i++) {
+        return "success";
+    }
+
+    function printHeaders(&$fp) {
+        fputs($fp,"STAT\r\n");
+        $get_stat=fgets($fp,1024);
+        $pos = strpos($get_stat, ' ',4)-4;
+        $mesNum = substr($get_stat, 4 , $pos);
+        //echo $mesNum.'<br />';
+
+
+        for($i=1;$i<=$mesNum*2;$i++) {
             $comm = "RETR " . $i. "\r\n";
             fputs($fp, $comm);
 
@@ -76,18 +83,26 @@ class POP3Auth
             $email = $this->fetch_structure($data);
 
             //echo $email['header'] . '<br />';
-            $base64_num = strpos($email['header'], "base64") + 7;
-            $text_base64 = substr($email['header'], $base64_num, strpos($email['header'], "=", $base64_num) - $base64_num + 1);
+
             $base64_num = strpos($email['header'], "From:") + 6;
             //echo $base64_num . '<br />';
             $text_base64 = substr($email['header'], $base64_num, strpos($email['header'], "To", $base64_num) - $base64_num);
-            echo "From: " . $text_base64 . '<br />' . '<br />';
+            //echo "From: " . $text_base64 . '<br />' . '<br />';
+            echo "<dt><a href = \"../auth/auth.html\" id=$i>$text_base64</a></dt>";
+            $base64_num = strpos($email['header'], "base64") + 7;
+            $text_base64 = substr($email['header'], $base64_num, strpos($email['header'], "=", $base64_num) - $base64_num + 1);
+
+
             //if ($format != "utf-8") echo iconv($format,"utf-8",base64_decode($text_base64)).'<br />';
             // else echo base64_decode($text_base64).'<br />';
             /*$base64_num=0;
             while (strpos($email['body'], "base64", $base64_num)!=false) {*/
             $base64_num = strpos($email['body'], "base64") + 7;
             $text_base64 = substr($email['body'], $base64_num, strpos($email['body'], "=", $base64_num) - $base64_num + 1);
+            $text_base64=base64_decode($text_base64);
+            if ($format != "utf-8") $text_base64=iconv($format,"utf-8",$text_base64);
+            $text_base64=substr($text_base64,0,40)."...";
+            echo "<dd><a href = \"../auth/auth.html\" id=$i>$text_base64</a></dd>";
             //echo base64_decode($text_base64) . '<br />';
             //}
             //echo $text_base64.'<br />';
@@ -97,9 +112,7 @@ class POP3Auth
             /*$comm="TOP 2 1\r\n";
             fputs($fp,$comm);
             echo fgets($fp,1024).'<br />';*/
-
         }
-
 
         fputs($fp, "QUIT " . CRLF);
         echo fgets($fp, 1024) . '<br />';
@@ -107,10 +120,6 @@ class POP3Auth
 
         fclose($fp);
         return "success";
-    }
-
-    function printHeaders(&$fp) {
-
     }
 
     function decode_mime_string($subject) {
@@ -127,7 +136,7 @@ class POP3Auth
             $endpos = strpos($string,"?=");
             $mystring = substr($string,0,$endpos);
             $string = substr($string,$endpos+2,strlen($string));
-            if($enctype == "q") $mystring = quoted_printable_decode(ereg_replace("_"," ",$mystring));
+            if($enctype == "q") /*$mystring = quoted_printable_decode(ereg_replace("_"," ",$mystring))*/;
             else if ($enctype == "b") $mystring = base64_decode($mystring);
             $newresult .= $mystring;
             $pos = strpos($string,"=?");

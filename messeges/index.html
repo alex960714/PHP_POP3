@@ -37,6 +37,8 @@
                           <?php
                           $fp=$_GET['connect'];
                           //echo $fp.'<br />';
+                          $connect=new POP3Auth();
+                          $connect->printHeaders($fp);
                           for($i=1;$i<=14;$i++) {
                               echo "<dt><a href = \"../auth/auth.html\">4.04.15</a></dt>";
                               echo "<dd><a href = \"../auth/auth.html\">День веб-мастера</a></dd>";
