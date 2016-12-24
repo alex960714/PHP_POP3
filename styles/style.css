@@ -358,6 +358,7 @@ body {
     text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
     box-sizing: border-box;
 }
+
 dt {
     width: 30%;
     float: left;
@@ -373,9 +374,11 @@ dd {
     border: 1px solid #ffffff;
     border-left: none;
 }
+
 .holiday a
 {
     text-decoration: none;
     color: #000000;
     text-shadow: 0px 0px 6px rgba(255,255,255,0.7);
 }
+

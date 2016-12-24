@@ -2,7 +2,7 @@
 include "../auth/POP3Auth.php";
 $connect=new POP3Auth();
 
-if($connect->connect($_POST['login'],$_POST['client'] ,$_POST['password'], $fp ) == "success") {
+if($connect->connect($_POST['login'],$_POST['client'] ,$_POST['password'], $fp ) == "success" || !empty($_SESSION)) {
     $_SESSION['log'] = $_POST['login'] . '@' . $_POST['client'];
     $_GET['connect']=$fp;
     ?>
@@ -23,8 +23,8 @@ if($connect->connect($_POST['login'],$_POST['client'] ,$_POST['password'], $fp )
     <div id="header"></div>
 
     <!-- <div id="navigation">Блок навигации </div> -->
-
-    <div id="menu">
+    <?php
+    /*<div id="menu">
         <table id = "table_menu">
             <tr><br><center><button id = "button1" onclick="">Входящие</button></center></br></tr>
             <tr><center><button id = "button2">Отправленные</button></center></tr>
@@ -34,7 +34,9 @@ if($connect->connect($_POST['login'],$_POST['client'] ,$_POST['password'], $fp )
             <tr><center><button id = "button6">Корзина</button></center></tr>
         </table>
 
-    </div>
+    </div>*/
+    require "../headers/menu.html";
+    ?>
 
     <div id="content">
         <div id="wrapper">

@@ -2,15 +2,17 @@
 class POP3Auth
 {
     function _construct()
-    {}
+    {
+        define('CRLF', "\r\n");
+    }
 
     function _destruct()
     {}
 
     function connect($login,$client,$password,&$fp)
     {
-
         define('CRLF', "\r\n");
+
         //$email=$login."@".$client;
         $host = "pop." . $client;
         try {
@@ -43,8 +45,21 @@ class POP3Auth
             fclose($fp);
             return "log_or_pass_fail";
         }
+        //session_start();
+        $_SESSION['id']=$login."@".$client;
+        $_SESSION['log']=$login;
+        $_SESSION['client']=$client;
+        $_SESSION['pass']=$password;
+        return "success";
+    }
+    
+    function sessionExit(&$fp)
+    {
+        fputs($fp, "QUIT " . "\r\n");
+        echo fgets($fp, 1024) . '<br />';
 
 
+        fclose($fp);
         return "success";
     }
 
@@ -54,6 +69,9 @@ class POP3Auth
         $pos = strpos($get_stat, ' ',4)-4;
         $mesNum = substr($get_stat, 4 , $pos);
         //echo $mesNum.'<br />';
+        //print_r($_SESSION).'<br />';
+        //$subj=Array();
+        $bodies=Array();
 
 
         for($i=1;$i<=$mesNum*2;$i++) {
@@ -67,28 +85,30 @@ class POP3Auth
 
             fputs($fp, $comm);
             $data = $this->get_data($fp);
-            /*while (!feof($fp)) {
-                $buffer = chop(fgets($fp,1024));
-                $data .= "$buffer\r\n";
-                if(trim($buffer) == ".") break;
-            }*/
             //$message=$this->compile_body($data, "base64","string" );
             $format = substr($data, strpos($data, "charset=\"") + 9, strpos($data, "\"", strpos($data, "charset=\"") + 9) - (strpos($data, "charset=\"") + 9));
             $data = quoted_printable_decode($data);
             if ($format != "utf-8") $data = iconv($format, "utf-8", $data);
             /*$format = substr($data, strpos($data, "base64"), 7);
             echo $format.'<br />';*/
+
             $data = $this->decode_mime_string($data);
             $data = $this->compile_body($data, "utf-8");
             $email = $this->fetch_structure($data);
 
             //echo $email['header'] . '<br />';
 
-            $base64_num = strpos($email['header'], "From:") + 6;
+            $from_pos = strpos($email['header'], "From:") + 6;
             //echo $base64_num . '<br />';
-            $text_base64 = substr($email['header'], $base64_num, strpos($email['header'], "To", $base64_num) - $base64_num);
+            $from_name = substr($email['header'], $from_pos, strpos($email['header'], "To", $from_pos) - $from_pos);
+            if(strlen($from_name)>28) {
+                $from_name=substr($from_name,0,23)."...";
+            }
+            if(strlen($from_name)==0) {
+                $from_name="no_name";
+            }
             //echo "From: " . $text_base64 . '<br />' . '<br />';
-            echo "<dt><a href = \"../auth/auth.html\" id=$i>$text_base64</a></dt>";
+
             $base64_num = strpos($email['header'], "base64") + 7;
             $text_base64 = substr($email['header'], $base64_num, strpos($email['header'], "=", $base64_num) - $base64_num + 1);
 
@@ -101,8 +121,18 @@ class POP3Auth
             $text_base64 = substr($email['body'], $base64_num, strpos($email['body'], "=", $base64_num) - $base64_num + 1);
             $text_base64=base64_decode($text_base64);
             if ($format != "utf-8") $text_base64=iconv($format,"utf-8",$text_base64);
-            $text_base64=substr($text_base64,0,40)."...";
-            echo "<dd><a href = \"../auth/auth.html\" id=$i>$text_base64</a></dd>";
+            $subject=substr($text_base64,0,80)."...";
+            
+            if($i%2==0) {
+                $bodies[$i/2]=$email['body'];
+                /*$mail_name="<dt><a href = \"../pageLoad/message.php\" id=$i value=$fp>$from_name</a></dt>";
+                $subj_name="<dd><a href = \"../pageLoad/message.php\" id=$i value=$fp>$subject</a></dd>";*/
+                $mail_name="<dt>".$from_name."</dt>";
+                $subj_name="<dd>".$subject."</dd>";
+
+                echo '<form method=\"get\" action="../pageLoad/message.php?' . htmlspecialchars('SID') . '"><label>'.
+                    $mail_name.$subj_name."<input type='submit' name='mes' value=".($i/2)."></label></form>";
+            }
             //echo base64_decode($text_base64) . '<br />';
             //}
             //echo $text_base64.'<br />';
@@ -113,13 +143,8 @@ class POP3Auth
             fputs($fp,$comm);
             echo fgets($fp,1024).'<br />';*/
         }
-
-        fputs($fp, "QUIT " . CRLF);
-        echo fgets($fp, 1024) . '<br />';
-
-
-        fclose($fp);
-        return "success";
+        $_SESSION['body']=$bodies;
+        
     }
 
     function decode_mime_string($subject) {
